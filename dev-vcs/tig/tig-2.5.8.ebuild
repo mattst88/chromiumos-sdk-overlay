@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -18,12 +18,13 @@ HOMEPAGE="https://jonas.github.io/tig/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="test unicode"
+IUSE="pcre test unicode"
 REQUIRED_USE="test? ( unicode )"
 
 DEPEND="
 	sys-libs/ncurses:=[unicode(+)?]
 	sys-libs/readline:0=
+	pcre? ( dev-libs/libpcre2:= )
 "
 RDEPEND="
 	${DEPEND}
@@ -40,7 +41,9 @@ src_prepare() {
 }
 
 src_configure() {
-	econf $(use_with unicode ncursesw)
+	econf \
+		$(use_with pcre) \
+		$(use_with unicode ncursesw)
 }
 
 src_compile() {
@@ -50,7 +53,7 @@ src_compile() {
 
 src_test() {
 	# workaround parallel test failures
-	emake -j1 test
+	LC_ALL=en_US.utf8 emake -j1 test
 }
 
 src_install() {
@@ -58,5 +61,6 @@ src_install() {
 	dodoc doc/manual.html README.html NEWS.html
 	newbashcomp contrib/tig-completion.bash ${PN}
 
+	docinto examples
 	dodoc contrib/*.tigrc
 }
