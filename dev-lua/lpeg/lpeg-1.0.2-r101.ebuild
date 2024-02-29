@@ -11,7 +11,7 @@ DESCRIPTION="Parsing Expression Grammars for Lua"
 HOMEPAGE="http://www.inf.puc-rio.br/~roberto/lpeg/"
 SRC_URI="http://www.inf.puc-rio.br/~roberto/${PN}/${P}.tar.gz"
 
-LICENSE="MIT"
+LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="*"
 IUSE="test debug doc"
