@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Gentoo Authors
+# Copyright 2019-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,11 +11,11 @@ HOMEPAGE="https://github.com/junegunn/fzf"
 # For fancy versioning only. Bump on the next release!
 # MY_GIT_REV is the first 7 characters of release commit, we truncate it
 # after to make it easier to copy/paste.
-MY_GIT_REV=352ea072269dfe2a3c429785a95a2f22887ccda3
+MY_GIT_REV=9e92b6f11e0f59272de410f56493893334071e6e
 MY_GIT_REV=${MY_GIT_REV:0:7}
 
-SRC_URI="https://github.com/junegunn/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
-SRC_URI+=" https://dev.gentoo.org/~sam/distfiles/${CATEGORY}/${PN}/${P}-deps.tar.xz"
+SRC_URI="https://github.com/junegunn/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI+=" https://dev.gentoo.org/~mattst88/distfiles/${P}-deps.tar.xz"
 
 LICENSE="MIT BSD-with-disclosure"
 SLOT="0"
@@ -23,7 +23,7 @@ KEYWORDS="*"
 
 src_prepare() {
 	default
-	sed -i 's/-s -w //' Makefile || die # bug 795225
+	sed -i 's/-s -w //' Makefile || die # bug #795225
 }
 
 src_compile() {
