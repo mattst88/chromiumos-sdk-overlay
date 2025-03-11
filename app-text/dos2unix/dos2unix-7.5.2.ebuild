@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -13,18 +13,19 @@ SRC_URI="
 	https://www.xs4all.nl/~waterlan/${PN}/${P/_/-}.tar.gz
 	https://downloads.sourceforge.net/${PN}/${P/_/-}.tar.gz
 "
-S="${WORKDIR}/${P/_/-}"
+S=${WORKDIR}/${P/_/-}
 
 LICENSE="BSD-2"
 SLOT="0"
 [[ "${PV}" == *_beta* ]] || \
 KEYWORDS="*"
 IUSE="debug nls test"
+RESTRICT="!test? ( test )"
 
 RDEPEND="
 	!app-text/hd2u
-	virtual/libintl"
-
+	virtual/libintl
+"
 DEPEND="
 	${RDEPEND}
 	test? ( virtual/perl-Test-Simple )
@@ -32,9 +33,8 @@ DEPEND="
 BDEPEND="
 	dev-lang/perl
 	nls? ( sys-devel/gettext )
+	test? ( elibc_musl? ( sys-apps/musl-locales ) )
 "
-
-RESTRICT="!test? ( test )"
 
 handle_locales() {
 	# Make sure locale list is kept up-to-date.
