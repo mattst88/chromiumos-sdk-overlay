@@ -1,7 +1,5 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-
-# Bump tree-sitter-cli at the same time.
 
 EAPI=7
 inherit optfeature toolchain-funcs
@@ -18,18 +16,15 @@ else
 fi
 
 LICENSE="MIT"
-SLOT="0"
+# ABI is not stable. Revisit after tree-sitter-1.0.
+# https://bugs.gentoo.org/930039
+# https://github.com/tree-sitter/tree-sitter/pull/3302
+SLOT="0/${PV}"
+RESTRICT="test" # tests are for CLI and not the lib
 
 PATCHES=(
-	"${FILESDIR}/${PN}-0.20.9-no-static.patch"
+	"${FILESDIR}/${PN}-0.22.2-no-static.patch"
 )
-
-# XXX: Please, don't forget to check this on next version bump.
-# And, maybe remove as non-needed, if version in Makefile will
-# match the release.
-# ref: https://github.com/tree-sitter/tree-sitter/issues/2210
-# see Makefile:1￼
-QA_PKGCONFIG_VERSION="0.20.10"
 
 src_prepare() {
 	default
@@ -40,14 +35,14 @@ src_compile() {
 	emake \
 		PREFIX="${EPREFIX}/usr" \
 		LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
-		STRIP=""
+		STRIP="" # bug 930020
 }
 
 src_install() {
 	emake DESTDIR="${D}" \
-		PREFIX="${EPREFIX}/usr" \
-		LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
-		install
+		  PREFIX="${EPREFIX}/usr" \
+		  LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
+		  install
 }
 
 pkg_postinst() {
