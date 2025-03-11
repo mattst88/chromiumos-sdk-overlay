@@ -1,14 +1,14 @@
 Respect user CFLAGS and LDFLAGS.
 
---- lpeg-1.0.2/makefile
-+++ lpeg-1.0.2/makefile
+--- lpeg-1.1.0/makefile
++++ lpeg-1.1.0/makefile
 @@ -1,7 +1,7 @@
  LIBNAME = lpeg
  LUADIR = ../lua/
  
 -COPT = -O2 -DNDEBUG
 +COPT = -DNDEBUG
- # COPT = -g
+ # COPT = -O0 -DLPEG_DEBUG -g
  
  CWARNS = -Wall -Wextra -pedantic \
 @@ -22,7 +22,7 @@

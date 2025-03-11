@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -8,27 +8,34 @@ LUA_COMPAT=( lua5-{1..4} luajit )
 inherit lua flag-o-matic toolchain-funcs
 
 DESCRIPTION="Parsing Expression Grammars for Lua"
-HOMEPAGE="http://www.inf.puc-rio.br/~roberto/lpeg/"
-SRC_URI="http://www.inf.puc-rio.br/~roberto/${PN}/${P}.tar.gz"
+HOMEPAGE="https://www.inf.puc-rio.br/~roberto/lpeg/"
+SRC_URI="https://luarocks.org/manifests/gvvaughan/${P}-1.src.rock -> ${P}.zip"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="*"
 IUSE="test debug doc"
 REQUIRED_USE="${LUA_REQUIRED_USE}"
-
 RESTRICT="!test? ( test )"
 
 RDEPEND="${LUA_DEPS}"
 DEPEND="${RDEPEND}"
 BDEPEND="
 	virtual/pkgconfig
+	app-arch/unzip
 	test? ( ${RDEPEND} )
 "
 
 DOCS=( HISTORY )
 HTML_DOCS=( lpeg.html re.html )
-PATCHES=( "${FILESDIR}"/${PN}-1.0.2-makefile.patch )
+PATCHES=(
+	"${FILESDIR}"/${PN}-1.1.0-makefile.patch
+)
+
+src_unpack() {
+	unpack "${P}.zip" || die
+	unpack "${WORKDIR}/${P}.tar.gz" || die
+}
 
 lua_src_prepare() {
 	if ! test -d "${S}.${ELUA}/" ; then
@@ -81,7 +88,8 @@ lua_src_install() {
 		# we only want the major version (e.g. 5.1)
 		local luamv=${luav:0:3}
 		local file="lua/${luamv}/lpeg.so"
-		install_name_tool -id "${EPREFIX}/usr/$(get_libdir)/${file}" "${ED}/usr/$(get_libdir)/${file}" || die "Failed to adjust install_name"
+		install_name_tool -id "${EPREFIX}/usr/$(get_libdir)/${file}" \
+			"${ED}/usr/$(get_libdir)/${file}" || die "Failed to adjust install_name"
 	fi
 }
 
