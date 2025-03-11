@@ -1,4 +1,4 @@
-# Copyright 2019-2024 Gentoo Authors
+# Copyright 2019-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,11 +11,11 @@ HOMEPAGE="https://github.com/junegunn/fzf"
 # For fancy versioning only. Bump on the next release!
 # MY_GIT_REV is the first 7 characters of release commit, we truncate it
 # after to make it easier to copy/paste.
-MY_GIT_REV=9e92b6f11e0f59272de410f56493893334071e6e
+MY_GIT_REV=0012183ede3619e2bf52932c196377f8a7befbf6
 MY_GIT_REV=${MY_GIT_REV:0:7}
 
 SRC_URI="https://github.com/junegunn/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-SRC_URI+=" https://dev.gentoo.org/~mattst88/distfiles/${P}-deps.tar.xz"
+SRC_URI+=" https://github.com/Oddegamra/gentoo-ebuilds/releases/download/${P}/${P}-deps.tar.xz"
 
 LICENSE="MIT BSD-with-disclosure"
 SLOT="0"
