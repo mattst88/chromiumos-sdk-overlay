@@ -1,9 +1,9 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit autotools bash-completion-r1 tmpfiles
+inherit autotools bash-completion-r1 tmpfiles eapi8-dosym
 
 DESCRIPTION="Search and query ebuilds"
 HOMEPAGE="https://github.com/vaeth/eix/"
@@ -85,6 +85,8 @@ src_install() {
 	default
 	dobashcomp bash/eix
 	dotmpfiles tmpfiles.d/eix.conf
+
+	dosym8 -r /usr/bin/eix-postsync /etc/portage/postsync.d/50-eix-postsync
 
 	rm -r "${ED}"/usr/bin/eix-functions.sh || die
 }
