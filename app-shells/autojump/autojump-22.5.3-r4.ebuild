@@ -1,11 +1,13 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-PYTHON_COMPAT=( python3_{8..9} )
+DISTUTILS_USE_PEP517=setuptools
+PYTHON_COMPAT=( python3_{10..13} )
+DISTUTILS_SINGLE_IMPL=1
 
-inherit bash-completion-r1 python-r1 vcs-snapshot prefix
+inherit distutils-r1 vcs-snapshot prefix
 
 DESCRIPTION="change directory command that learns"
 HOMEPAGE="https://github.com/wting/autojump"
@@ -17,13 +19,19 @@ KEYWORDS="*"
 IUSE="ipython test"
 REQUIRED_USE="ipython? ( ${PYTHON_REQUIRED_USE} )"
 
-# Not all tests pass. Need investigation.
-RESTRICT="test"
+RESTRICT="!test? ( test )"
 RDEPEND="ipython? ( ${PYTHON_DEPS} )"
 DEPEND="${PYTHON_DEPS}"
 
+distutils_enable_tests pytest
+
+PATCHES=(
+	"${FILESDIR}"/${PV}-Use-mock-from-unittest.patch
+	"${FILESDIR}"/${PV}-Drop-pre-commit.patch
+)
+
 src_prepare() {
-	eapply_user
+	default
 	sed -e "s:/usr/local/share:/usr/share:" \
 		-i bin/autojump.sh || die
 
@@ -40,7 +48,7 @@ src_compile() {
 
 src_install() {
 	dobin bin/"${PN}"
-	python_replicate_script "${ED}"/usr/bin/"${PN}"
+	python_doscript "${ED}"/usr/bin/"${PN}"
 
 	insinto /etc/profile.d
 	doins bin/"${PN}".sh
@@ -52,10 +60,10 @@ src_install() {
 	insinto /usr/share/zsh/site-functions
 	doins bin/_j
 
-	python_foreach_impl python_domodule bin/autojump_argparse.py bin/autojump_data.py \
+	python_domodule bin/autojump_argparse.py bin/autojump_data.py \
 		bin/autojump_match.py bin/autojump_utils.py
 	if use ipython; then
-		python_foreach_impl python_domodule tools/autojump_ipython.py
+		python_domodule tools/autojump_ipython.py
 	fi
 
 	doman docs/"${PN}.1"
