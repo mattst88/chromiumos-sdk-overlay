@@ -1,0 +1,12 @@
+diff --git a/chromeos/config/make.conf.amd64-host b/chromeos/config/make.conf.amd64-host
+index 67be32ba04e2..1776c113e37f 100644
+--- a/chromeos/config/make.conf.amd64-host
++++ b/chromeos/config/make.conf.amd64-host
+@@ -15,6 +15,7 @@ PORTDIR_OVERLAY="
+   /mnt/host/source/src/third_party/chromiumos-overlay
+   /mnt/host/source/src/third_party/eclass-overlay
+   /mnt/host/source/src/overlays/overlay-amd64-host
++  /home/msturner/projects/overlay/
+ "
+ 
+ # Where to store built packages.

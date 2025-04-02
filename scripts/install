@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+scriptdir=${BASH_SOURCE%/*}
+
+cros workon --host start intel_clc
+
+git -C ~/chromiumos/src/third_party/chromiumos-overlay/ apply "${scriptdir}"/add-overlay.patch
+
+sudo emerge --getbinpkg --jobs -Dva1u virtual/msturner intel_clc
+
+git -C ~/chromiumos/src/third_party/chromiumos-overlay/ apply -R "${scriptdir}"/add-overlay.patch
